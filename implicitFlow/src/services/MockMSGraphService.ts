@@ -3,8 +3,9 @@ import { IMSGraphService } from './IMSGraphService';
 
 export default class MockMSGraphService implements IMSGraphService {
     
-    public getReProperties (clientId: string, 
-                            endpointUrl: string):
+    public getAllGroups (tenant: string,
+                            clientId: string, 
+                            resourceId: string):
         Promise<IADGroup[] | string> {
 
         return new Promise<IADGroup[]> ((resolve => {

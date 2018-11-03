@@ -4,10 +4,9 @@ import AuthService from './AuthService';
 
 export default class MSGraphService implements IMSGraphService {
     
-    public getReProperties (tenant: string,
+    public getAllGroups (tenant: string,
                             clientId: string, 
-                            resourceId: string,
-                            endpointUrl: string):
+                            resourceId: string):
         Promise<IADGroup[] | string> {
 
         return new Promise<IADGroup[]> ((resolve, reject) => {
@@ -17,7 +16,7 @@ export default class MSGraphService implements IMSGraphService {
             .then((token) => {
 
                 fetch(
-                    `${endpointUrl}/api/REProperties/`,
+                    `https://graph.microsoft.com/v1.0/groups/?$orderby=displayName`,
                     {
                         method: "GET",
                         mode: "cors",
@@ -34,7 +33,12 @@ export default class MSGraphService implements IMSGraphService {
                     }
                 })
                 .then ((json) => {
-                    resolve(json);
+                    const result: IADGroup[] = 
+                        json.value.map((g) => ({
+                            id: g.id,
+                            name: g.displayName
+                        }));
+                    resolve(result);
                 })
                 .catch ((error) => {
                     resolve ([

@@ -1,9 +1,8 @@
 import { IADGroup } from '../model/IADGroup';
 
 export interface IMSGraphService {
-    getReProperties(tenant: string,
+    getAllGroups(tenant: string,
                     clientId: string,
-                    resourceId: string,
-                    endpointUrl: string):
+                    resourceId: string):
         Promise<IADGroup[] | string>;
 }
