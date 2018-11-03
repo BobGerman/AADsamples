@@ -16,7 +16,7 @@ export default class AuthService {
             redirectUri: window.location.href,
             cacheLocation: 'localStorage'
         };
-        alert(this.config.redirectUri);
+
         this.authContext = new AuthenticationContext(this.config);
 
     }
