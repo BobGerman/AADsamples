@@ -1,9 +1,9 @@
-import { IReProperty } from '../model/IReProperty';
+import { IADGroup } from '../model/IADGroup';
 
-export interface IReManagerService {
+export interface IMSGraphService {
     getReProperties(tenant: string,
                     clientId: string,
                     resourceId: string,
                     endpointUrl: string):
-        Promise<IReProperty[] | string>;
+        Promise<IADGroup[] | string>;
 }

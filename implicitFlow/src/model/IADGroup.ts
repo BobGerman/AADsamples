@@ -1,4 +1,4 @@
-export interface IReProperty {
+export interface IADGroup {
     id: number;
     name: string;
     address: string;
@@ -11,5 +11,4 @@ export interface IReProperty {
     purchaseAmount: number;
     isForSale: boolean;
     isForRent: boolean;
-
 }

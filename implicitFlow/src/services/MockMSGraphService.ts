@@ -1,13 +1,13 @@
-import { IReProperty } from '../model/IReProperty';
-import { IReManagerService } from './IReManagerService';
+import { IADGroup } from '../model/IADGroup';
+import { IMSGraphService } from './IMSGraphService';
 
-export default class MockReManagerService implements IReManagerService {
+export default class MockMSGraphService implements IMSGraphService {
     
     public getReProperties (clientId: string, 
                             endpointUrl: string):
-        Promise<IReProperty[] | string> {
+        Promise<IADGroup[] | string> {
 
-        return new Promise<IReProperty[]> ((resolve => {
+        return new Promise<IADGroup[]> ((resolve => {
             resolve (this.mockItems);
         }));
 

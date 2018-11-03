@@ -1,5 +1,5 @@
-import { IReProperty } from '../model/IReProperty';
+import { IADGroup } from '../model/IADGroup';
 
 export interface ITestWebApiProps {
-  reProperties: IReProperty[];
+  reProperties: IADGroup[];
 }

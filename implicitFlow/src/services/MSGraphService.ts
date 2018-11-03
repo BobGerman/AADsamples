@@ -1,16 +1,16 @@
-import { IReProperty } from '../model/IReProperty';
-import { IReManagerService } from './IReManagerService';
+import { IADGroup } from '../model/IADGroup';
+import { IMSGraphService } from './IMSGraphService';
 import AuthService from './AuthService';
 
-export default class ReManagerService implements IReManagerService {
+export default class MSGraphService implements IMSGraphService {
     
     public getReProperties (tenant: string,
                             clientId: string, 
                             resourceId: string,
                             endpointUrl: string):
-        Promise<IReProperty[] | string> {
+        Promise<IADGroup[] | string> {
 
-        return new Promise<IReProperty[]> ((resolve, reject) => {
+        return new Promise<IADGroup[]> ((resolve, reject) => {
 
             const authSvc = new AuthService(tenant, clientId, resourceId);
             authSvc.getToken()

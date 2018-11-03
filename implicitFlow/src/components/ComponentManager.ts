@@ -4,12 +4,12 @@ import * as ReactDOM from 'react-dom';
 import { ITestWebApiProps } from './ITestWebApiProps';
 import TestWebApi from './TestWebApi';
 
-import { IReProperty } from '../model/IReProperty';
+import { IADGroup } from '../model/IADGroup';
 
 export default class ComponentManager {
 
     public static render(headerDomElement: HTMLElement, footerDomElement: HTMLElement,
-        data: IReProperty[]): void {
+        data: IADGroup[]): void {
 
         // If there is a header DOM element, make the react element and render it
         if (headerDomElement) {
