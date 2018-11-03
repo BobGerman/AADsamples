@@ -40,17 +40,7 @@ export default class MSGraphService implements IMSGraphService {
                     resolve ([
                         {
                             "id": 1,
-                            "name": `Error ${error} using token ${token}`,
-                            "address": "",
-                            "unit": "",
-                            "city": "",
-                            "state": "",
-                            "postalCode": "",
-                            "country": null,
-                            "purchaseDate": "2010-12-03T00:00:00",
-                            "purchaseAmount": 0,
-                            "isForSale": false,
-                            "isForRent": false
+                            "name": `Error ${error} using token ${token}`
                         }
                     ]);
                 });
@@ -60,18 +50,7 @@ export default class MSGraphService implements IMSGraphService {
                 resolve ([
                     {
                         "id": 1,
-                        "name": 'ERROR: ' + error,
-                        "address": "5 Progress Road",
-                        "unit": "",
-                        "city": "Burlington",
-                        "state": "MA",
-                        "postalCode": "01803",
-                        "country": null,
-                        "purchaseDate": "2010-12-03T00:00:00",
-                        "purchaseAmount": 344000,
-                        "isForSale": false,
-                        "isForRent": false
-                    }
+                        "name": 'ERROR: ' + error                    }
                 ]);
             })
 

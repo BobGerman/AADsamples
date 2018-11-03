@@ -8,10 +8,10 @@ export class bootstrapper {
   public onInit(): void {
 
     const workspace = document.getElementById('spaContainer');
-    // Hard-coded for now
     if (workspace) {
 
-      const service = ServiceFactory.getService(false);
+      const isV1 = window.location.search.indexOf('v1') >= 0;
+      const service = ServiceFactory.getService(!isV1);
       service.getReProperties(constants.tenant,
                               constants.clientId,
                               constants.resourceId,
