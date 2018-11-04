@@ -9,8 +9,9 @@ export default class TestWebApi extends React.Component<ITestWebApiProps, {}> {
         <div className={ 'container' }>
           { this.props.reProperties.map(p => (
           <div className={ 'row' }>
-            <span className={ 'column' }>{this.htmlEncode(p.id.toString())}</span>
+            <span className={ 'column' }>{this.htmlEncode(p.types)}</span>
             <span className={ 'column' }>{this.htmlEncode(p.name)}</span>
+            <span className={ 'column' }>{this.htmlEncode(p.id.toString())}</span>
           </div>
           )) }
         </div>

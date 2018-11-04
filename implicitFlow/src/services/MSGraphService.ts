@@ -36,15 +36,19 @@ export default class MSGraphService implements IMSGraphService {
                     const result: IADGroup[] = 
                         json.value.map((g) => ({
                             id: g.id,
-                            name: g.displayName
+                            name: g.displayName,
+                            email: g.mail,
+                            types: g.groupTypes.join()
                         }));
                     resolve(result);
                 })
                 .catch ((error) => {
                     resolve ([
                         {
-                            "id": 1,
-                            "name": `Error ${error} using token ${token}`
+                            id: 1,
+                            name: `Error ${error} using token ${token}`,
+                            email: '',
+                            types: ''
                         }
                     ]);
                 });
@@ -53,8 +57,11 @@ export default class MSGraphService implements IMSGraphService {
             .catch((error) => {
                 resolve ([
                     {
-                        "id": 1,
-                        "name": 'ERROR: ' + error                    }
+                        id: 1,
+                        name: 'ERROR: ' + error,
+                        email: '',
+                        types: ''
+                    }
                 ]);
             })
 
