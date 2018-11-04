@@ -20,32 +20,34 @@
         <div id="officeLocation"></div>
     </div>
 
+    <p><i>From <a href="http://bit.ly/SimpleAdal" target="_blank">http://bit.ly/SimpleAdal</a></i></p>
+
     <script type="text/javascript">
         "use strict";
-        var sympraxis = window.sympraxis || {};
-        sympraxis.clientId = 'b60aee3b-fce4-452f-a002-50e5df59ca85';
-        sympraxis.tenant = 'bgtest18.onmicrosoft.com';
+        var sampleApp = window.sampleApp || {};
+        sampleApp.clientId = 'b60aee3b-fce4-452f-a002-50e5df59ca85';
+        sampleApp.tenant = 'bgtest18.onmicrosoft.com';
 
-        sympraxis.config = {
-            tenant: sympraxis.tenant,
-            clientId: sympraxis.clientId,
+        sampleApp.config = {
+            tenant: sampleApp.tenant,
+            clientId: sampleApp.clientId,
             endpoints: {
                 graphUri: 'https://graph.microsoft.com'
             },
             cacheLocation: "localStorage"
         };
         //Create the autentication context
-        sympraxis.authContext = new AuthenticationContext(sympraxis.config);
+        sampleApp.authContext = new AuthenticationContext(sampleApp.config);
 
-        sympraxis.getAuthToken = function (endpoint) {
+        sampleApp.getAuthToken = function (endpoint) {
             var d = jQuery.Deferred();
 
             //Read the token from the cache
-            var tokenCache = sympraxis.authContext.getCachedToken(endpoint);
+            var tokenCache = sampleApp.authContext.getCachedToken(endpoint);
 
             if (tokenCache == undefined) {
                 //If token is undefined, then call AAD to get a new token
-                sympraxis.authContext.acquireToken(endpoint, function (error, token) {
+                sampleApp.authContext.acquireToken(endpoint, function (error, token) {
                     if (error || !token) {
                         d.reject(error);
                     }
@@ -60,9 +62,9 @@
             return d.promise();
         };
 
-        sympraxis.getGraphData = function () {
+        sampleApp.getGraphData = function () {
             //Get the token, either from the cache or from the server
-            var tokenPromise = sympraxis.getAuthToken(sympraxis.config.endpoints.graphUri);
+            var tokenPromise = sampleApp.getAuthToken(sampleApp.config.endpoints.graphUri);
             tokenPromise.then(function (token) {
                 //Promise for token resolved
                 if (token != undefined) {
@@ -92,17 +94,17 @@
 
         $(document).ready(function () {
             // Check For & Handle Redirect From AAD After Login or Acquiring Token
-            var isCallback = sympraxis.authContext.isCallback(window.location.hash);
+            var isCallback = sampleApp.authContext.isCallback(window.location.hash);
 
-            if (isCallback && !sympraxis.authContext.getLoginError()) {
-                sympraxis.authContext.handleWindowCallback(window.location.hash);
+            if (isCallback && !sampleApp.authContext.getLoginError()) {
+                sampleApp.authContext.handleWindowCallback(window.location.hash);
             } else {
-                var user = sympraxis.authContext.getCachedUser();
+                var user = sampleApp.authContext.getCachedUser();
                 if (!user) {
                     //Log in user
-                    sympraxis.authContext.login();
+                    sampleApp.authContext.login();
                 } else {
-                    sympraxis.getGraphData();
+                    sampleApp.getGraphData();
                 }
             }
 
@@ -112,7 +114,7 @@
     <h4 style="font-family: sans-serif">Samples:</h4>
     <ul style="font-family: sans-serif; list-style-type:square">
         <li><a href="/index.0.html">Mock data</a></li>
-        <li><a href="/index.1b.html">V1 endpoint (Javascript)</a></li>
+        <li><a href="/index.1a.html">V1 endpoint (Javascript)</a></li>
         <li><a href="/index.1b.html">V1 endpoint (Typescript)</a></li>
         <li><a href="/index.2a.html">V2 endpoint (Javascript)</a></li>
         <li><a href="/index.2b.html">V2 endpoint (Typescript)</a></li>
