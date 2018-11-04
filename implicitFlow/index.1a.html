@@ -3,8 +3,111 @@
 <head>
 </head>
 
-<body>
-    <div id="spaContainer">Loading...</div>
+<body style="font-family: sans-serif">
+
+    <!-- From https://julieturner.net/2017/01/extending-sharepoint-with-adal-and-the-microsoft-graph-api-part-2-the-authorization/ -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
+
+    <div>
+        <h1>My Great ADAL Test</h1>
+        <div id="message"></div>
+        <br />
+        <div id="displayName"></div>
+        <div id="jobTitle"></div>
+        <div id="mail"></div>
+        <div id="mobilePhone"></div>
+        <div id="officeLocation"></div>
+    </div>
+
+    <script type="text/javascript">
+        "use strict";
+        var sympraxis = window.sympraxis || {};
+        sympraxis.clientId = 'b60aee3b-fce4-452f-a002-50e5df59ca85';
+        sympraxis.tenant = 'bgtest18.onmicrosoft.com';
+
+        sympraxis.config = {
+            tenant: sympraxis.tenant,
+            clientId: sympraxis.clientId,
+            endpoints: {
+                graphUri: 'https://graph.microsoft.com'
+            },
+            cacheLocation: "localStorage"
+        };
+        //Create the autentication context
+        sympraxis.authContext = new AuthenticationContext(sympraxis.config);
+
+        sympraxis.getAuthToken = function (endpoint) {
+            var d = jQuery.Deferred();
+
+            //Read the token from the cache
+            var tokenCache = sympraxis.authContext.getCachedToken(endpoint);
+
+            if (tokenCache == undefined) {
+                //If token is undefined, then call AAD to get a new token
+                sympraxis.authContext.acquireToken(endpoint, function (error, token) {
+                    if (error || !token) {
+                        d.reject(error);
+                    }
+                    else {
+                        d.resolve(token);
+                    }
+                });
+            } else {
+                d.resolve(tokenCache);
+            }
+            //Return a promise for acquiring token
+            return d.promise();
+        };
+
+        sympraxis.getGraphData = function () {
+            //Get the token, either from the cache or from the server
+            var tokenPromise = sympraxis.getAuthToken(sympraxis.config.endpoints.graphUri);
+            tokenPromise.then(function (token) {
+                //Promise for token resolved
+                if (token != undefined) {
+                    //Valid token, make a REST call to the MSGraphAPI
+                    var meUri = "https://graph.microsoft.com/v1.0/me";
+                    $.ajax
+                        ({
+                            type: "GET",
+                            url: meUri,
+                            headers: {
+                                //Include the token
+                                "Authorization": "Bearer " + token
+                            }
+                        }).done(function (response) {
+                            $("#message").text("Got the data.");
+                            $("#displayName").text(response.displayName);
+                            $("#jobTitle").text(response.jobTitle);
+                            $("#mail").text(response.mail);
+                            $("#mobilePhone").text(response.mobilePhone);
+                            $("#officeLocation").text(response.officeLocation);
+                        }).fail(function () {
+                            $("#message").text("Failed to get the data.");
+                        });
+                }
+            }, function (error) { console.log(JSON.stringify(error)); });
+        };
+
+        $(document).ready(function () {
+            // Check For & Handle Redirect From AAD After Login or Acquiring Token
+            var isCallback = sympraxis.authContext.isCallback(window.location.hash);
+
+            if (isCallback && !sympraxis.authContext.getLoginError()) {
+                sympraxis.authContext.handleWindowCallback(window.location.hash);
+            } else {
+                var user = sympraxis.authContext.getCachedUser();
+                if (!user) {
+                    //Log in user
+                    sympraxis.authContext.login();
+                } else {
+                    sympraxis.getGraphData();
+                }
+            }
+
+        });
+    </script>
 
     <h4 style="font-family: sans-serif">Samples:</h4>
     <ul style="font-family: sans-serif; list-style-type:square">
@@ -15,10 +118,7 @@
         <li><a href="/index.2b.html">V2 endpoint (Typescript)</a></li>
     </ul>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.2/react.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
-    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
-    <script src="/build/bundleClassic.js"></script>
+
 </body>
 
 </html>
