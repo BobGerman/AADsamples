@@ -1,5 +1,5 @@
 import { IADGroup } from './model/IADGroup';
-import { ServiceFactory } from './services/ServiceFactory';
+import { ServiceFactory, ServiceOption } from './services/ServiceFactory';
 import ComponentManager from './components/ComponentManager';
 import * as constants from './constants';
 
@@ -10,8 +10,13 @@ export class bootstrapper {
     const workspace = document.getElementById('spaContainer');
     if (workspace) {
 
-      const isMock = window.location.search.indexOf('mock') >= 0;
-      const service = ServiceFactory.getService(isMock);
+      let option = ServiceOption.mock;
+      if (window.location.href.indexOf('.1') >= 0) {
+        option = ServiceOption.v1;
+      } else if (window.location.href.indexOf('.2') >= 0) {
+        option = ServiceOption.v2;
+      }
+      const service = ServiceFactory.getService(option);
       service.getAllGroups(constants.tenant,
                               constants.clientId,
                               constants.resourceId)
