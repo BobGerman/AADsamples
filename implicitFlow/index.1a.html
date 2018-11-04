@@ -1,13 +1,10 @@
-<!DOCTYPE html>
 <html>
-
-<!-- This code is from the tutorial at https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-spa -->
-<!-- as of November 2018 -->
 
 <head>
 </head>
 
 <body>
+    <div id="spaContainer">Loading...</div>
 
     <h4 style="font-family: sans-serif">Samples:</h4>
     <ul style="font-family: sans-serif; list-style-type:square">
@@ -17,5 +14,11 @@
         <li><a href="/index.2a.html">V2 endpoint (Javascript)</a></li>
         <li><a href="/index.2b.html">V2 endpoint (Typescript)</a></li>
     </ul>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.6.2/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/15.6.2/react-dom.js"></script>
+    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/1.0.13/js/adal.min.js"></script>
+    <script src="/build/bundleClassic.js"></script>
 </body>
+
 </html>
