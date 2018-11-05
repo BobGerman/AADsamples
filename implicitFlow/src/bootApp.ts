@@ -23,7 +23,7 @@ export class bootstrapper {
 
       service.getAllGroups()
         .then((data: IADGroup[]) => {
-          ComponentManager.render(workspace, workspace, data);
+          ComponentManager.render(workspace, data);
         })
         .catch((error: string) => {
           console.log(`Error: ${error}`);
