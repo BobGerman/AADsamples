@@ -1,20 +1,15 @@
 /// <reference path="./msal.d.ts" />
 
-export default class AuthService {
+import { IAuthService } from './IAuthService';
 
-    private clientId: string;
+export default class AuthService implements IAuthService {
 
-    constructor(tenant: string, clientId: string, resourceId: string) {
-
-        this.clientId = '0feedf81-155c-4864-a407-73fbbcc09116';
-    }
-
-    public getToken(): Promise<string> {
+    public getToken(tenant: string, clientId: string, resourceId: string): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
 
-            const userAgentApp = new Msal.UserAgentApplication(this.clientId, null,
-                null,
+            const userAgentApp = new Msal.UserAgentApplication(clientId, 
+                null, null,
                 { storeAuthStateInCookie: true, cacheLocation: "localStorage" });
 
             this.ensureLogin(userAgentApp);

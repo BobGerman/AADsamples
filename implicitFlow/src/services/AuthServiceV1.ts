@@ -1,38 +1,32 @@
 import * as AuthenticationContext from 'adal-angular';
+import { IAuthService } from './IAuthService';
 
+export default class AuthService implements IAuthService {
 
-export default class AuthService {
+    // private authContext: AuthenticationContext;
+    // private config: AuthenticationContext.Options;
+    // private resourceId: string;
 
-    private authContext: AuthenticationContext;
-    private config: AuthenticationContext.Options;
-    private resourceId: string;
+    public getToken(tenant: string, clientId: string, resourceId: string): Promise<string> {
 
-    constructor(tenant: string, clientId: string, resourceId: string) {
-
-        this.resourceId = resourceId;
-        this.config = {
+        const config: AuthenticationContext.Options = {
             tenant: tenant,
             clientId: clientId,
             redirectUri: window.location.href,
             cacheLocation: 'localStorage'
         };
 
-        this.authContext = new AuthenticationContext(this.config);
-
-    }
-
-    public getToken(): Promise<string> {
-
+        const authContext = new AuthenticationContext(config);
         return new Promise<string>((resolve, reject) => {
 
-            if (this.ensureLogin()) {
+            if (this.ensureLogin(authContext)) {
 
-                let cachedToken = this.authContext.getCachedToken(this.resourceId);
+                let cachedToken = authContext.getCachedToken(resourceId);
                 if (cachedToken) {
                     resolve(cachedToken);
                 } else {
-                    this.authContext.acquireToken(
-                        this.resourceId,
+                    authContext.acquireToken(
+                        resourceId,
                         (error, acquiredToken) => {
                             if (error || !acquiredToken) {
                                 reject(error);
@@ -43,22 +37,22 @@ export default class AuthService {
                     );
                 }
             } else {
-                reject(`Login error: ${this.authContext.getLoginError()}`);
+                reject(`Login error: ${authContext.getLoginError()}`);
             }
         });
 
     }
 
-    private ensureLogin(): boolean {
+    private ensureLogin(authContext: AuthenticationContext): boolean {
 
-        var isCallback = this.authContext.isCallback(window.location.hash);
+        var isCallback = authContext.isCallback(window.location.hash);
 
-        if (isCallback && !this.authContext.getLoginError()) {
-            this.authContext.handleWindowCallback(window.location.hash);
+        if (isCallback && !authContext.getLoginError()) {
+            authContext.handleWindowCallback(window.location.hash);
         } else {
-            var user = this.authContext.getCachedUser();
+            var user = authContext.getCachedUser();
             if (!user) {
-                this.authContext.login();
+                authContext.login();
             } else {
                 return true;
             }
