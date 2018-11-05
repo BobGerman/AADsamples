@@ -8,7 +8,7 @@ import { IADGroup } from '../model/IADGroup';
 
 export default class ComponentManager {
 
-    public static render(workspaceDomElement: HTMLElement,
+    public static renderGroupTable(workspaceDomElement: HTMLElement,
         data: IADGroup[]): void {
 
         if (workspaceDomElement) {
