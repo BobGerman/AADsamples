@@ -9,7 +9,8 @@
     "experimentalDecorators": true,
     "skipLibCheck": true,
     "typeRoots": [
-      "./node_modules/@types"
+      "./node_modules/@types",
+      "./typings"
     ],
     "types": [
       "es6-promise",

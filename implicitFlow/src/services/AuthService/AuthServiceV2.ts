@@ -1,5 +1,3 @@
-/// <reference path="./msal.d.ts" />
-
 import { IAuthService } from './IAuthService';
 import * as constants from '../../constants';
 
