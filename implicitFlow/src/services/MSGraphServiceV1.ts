@@ -1,8 +1,8 @@
 import { IADGroup } from '../model/IADGroup';
 import { IMSGraphService } from './IMSGraphService';
-import AuthService from './AuthService';
+import AuthServiceV1 from './AuthServiceV1';
 
-export default class MSGraphService implements IMSGraphService {
+export default class MSGraphServiceV1 implements IMSGraphService {
     
     public getAllGroups (tenant: string,
                             clientId: string, 
@@ -11,7 +11,7 @@ export default class MSGraphService implements IMSGraphService {
 
         return new Promise<IADGroup[]> ((resolve, reject) => {
 
-            const authSvc = new AuthService(tenant, clientId, resourceId);
+            const authSvc = new AuthServiceV1(tenant, clientId, resourceId);
             authSvc.getToken()
             .then((token) => {
 
