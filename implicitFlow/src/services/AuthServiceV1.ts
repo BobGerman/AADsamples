@@ -1,5 +1,6 @@
 import * as AuthenticationContext from 'adal-angular';
 import { IAuthService } from './IAuthService';
+import * as constants from '../constants';
 
 export default class AuthService implements IAuthService {
 
@@ -7,11 +8,11 @@ export default class AuthService implements IAuthService {
     // private config: AuthenticationContext.Options;
     // private resourceId: string;
 
-    public getToken(tenant: string, clientId: string, resourceId: string, scopes: string[]): Promise<string> {
+    public getToken(): Promise<string> {
 
         const config: AuthenticationContext.Options = {
-            tenant: tenant,
-            clientId: clientId,
+            tenant: constants.tenant,
+            clientId: constants.clientIdV1,
             redirectUri: window.location.href,
             cacheLocation: 'localStorage'
         };
@@ -21,12 +22,12 @@ export default class AuthService implements IAuthService {
 
             if (this.ensureLogin(authContext)) {
 
-                let cachedToken = authContext.getCachedToken(resourceId);
+                let cachedToken = authContext.getCachedToken(constants.resourceId);
                 if (cachedToken) {
                     resolve(cachedToken);
                 } else {
                     authContext.acquireToken(
-                        resourceId,
+                        constants.resourceId,
                         (error, acquiredToken) => {
                             if (error || !acquiredToken) {
                                 reject(error);

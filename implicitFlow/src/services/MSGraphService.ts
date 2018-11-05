@@ -6,15 +6,12 @@ export default class MSGraphService implements IMSGraphService {
 
     constructor(private authService: IAuthService) { }
 
-    public getAllGroups(tenant: string,
-        clientId: string,
-        resourceId: string,
-        scopes: string[]):
+    public getAllGroups():
         Promise<IADGroup[] | string> {
 
         return new Promise<IADGroup[]>((resolve, reject) => {
 
-            this.authService.getToken(tenant, clientId, resourceId, scopes)
+            this.authService.getToken()
                 .then((token) => {
 
                     fetch(

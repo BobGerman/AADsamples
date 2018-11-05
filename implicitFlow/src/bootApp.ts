@@ -1,5 +1,7 @@
 import { IADGroup } from './model/IADGroup';
 import { ServiceFactory, ServiceOption } from './services/ServiceFactory';
+import { IMSGraphService } from './services/IMSGraphService';
+
 import ComponentManager from './components/ComponentManager';
 import * as constants from './constants';
 
@@ -10,20 +12,16 @@ export class bootstrapper {
     const workspace = document.getElementById('spaContainer');
     if (workspace) {
 
-      let option = ServiceOption.mock;
-      let clientId = '';
+      let service: IMSGraphService = null;
       if (window.location.href.indexOf('.1') >= 0) {
-        option = ServiceOption.v1;
-        clientId = constants.clientIdV1;
+        service = ServiceFactory.getService(ServiceOption.v1);
       } else if (window.location.href.indexOf('.2') >= 0) {
-        option = ServiceOption.v2;
-        clientId = constants.clientIdV2;
+        service = ServiceFactory.getService(ServiceOption.v2);
+      } else {
+        service = ServiceFactory.getService(ServiceOption.mock);
       }
-      const service = ServiceFactory.getService(option);
-      service.getAllGroups(constants.tenant,
-        clientId,
-        constants.resourceId,
-        constants.scopes)
+
+      service.getAllGroups()
         .then((data: IADGroup[]) => {
           ComponentManager.render(workspace, workspace, data);
         })
