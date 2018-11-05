@@ -4,7 +4,7 @@ import { IAuthService } from './IAuthService';
 
 export default class AuthService implements IAuthService {
 
-    public getToken(tenant: string, clientId: string, resourceId: string): Promise<string> {
+    public getToken(tenant: string, clientId: string, resourceId: string, scopes: string[]): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
 
@@ -12,15 +12,15 @@ export default class AuthService implements IAuthService {
                 null, null,
                 { storeAuthStateInCookie: true, cacheLocation: "localStorage" });
 
-            this.ensureLogin(userAgentApp);
-            userAgentApp.acquireTokenSilent(['group.read.all'])
+            this.ensureLogin(userAgentApp, scopes);
+            userAgentApp.acquireTokenSilent(scopes)
             .then ((accessToken) => {
                 resolve(accessToken);
             })
             .catch ((error) => {
                 console.log(error);
                 if (error.indexOf("consent_required") !== -1 || error.indexOf("interaction_required") !== -1 || error.indexOf("login_required") !== -1) {
-                    userAgentApp.acquireTokenRedirect(['group.read.all']);
+                    userAgentApp.acquireTokenRedirect(scopes);
                 } else {
                     reject('Error acquiring token: ' + error);
                 }
@@ -28,13 +28,13 @@ export default class AuthService implements IAuthService {
         });
     }
 
-    private ensureLogin(userAgentApp: Msal.UserAgentApplication): void { //: Promise<any> {
+    private ensureLogin(userAgentApp: Msal.UserAgentApplication, scopes: string[]): void { //: Promise<any> {
 
         if (userAgentApp.getUser() && !userAgentApp.isCallback(window.location.hash)) {
             return
         }
 
-        userAgentApp.loginRedirect(["group.read.all"]);
+        userAgentApp.loginRedirect(scopes);
     }
 
 }

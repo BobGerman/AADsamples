@@ -7,7 +7,7 @@ export default class AuthService implements IAuthService {
     // private config: AuthenticationContext.Options;
     // private resourceId: string;
 
-    public getToken(tenant: string, clientId: string, resourceId: string): Promise<string> {
+    public getToken(tenant: string, clientId: string, resourceId: string, scopes: string[]): Promise<string> {
 
         const config: AuthenticationContext.Options = {
             tenant: tenant,

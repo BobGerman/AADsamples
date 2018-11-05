@@ -5,7 +5,8 @@ export default class MockMSGraphService implements IMSGraphService {
     
     public getAllGroups (tenant: string,
                             clientId: string, 
-                            resourceId: string):
+                            resourceId: string,
+                            scopes: string[]):
         Promise<IADGroup[] | string> {
 
         return new Promise<IADGroup[]> ((resolve => {

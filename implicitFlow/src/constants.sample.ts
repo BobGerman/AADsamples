@@ -5,4 +5,5 @@ export const tenant = '<mytenant>.onmicrosoft.com';
 export const clientIdV1 = '<Application ID you registered in AAD>';
 export const clientIdV2 = '<Application ID you registered in AAD>';
 export const resourceId = 'https://graph.microsoft.com';
+export const scopes = [ 'group.read.all'];
 

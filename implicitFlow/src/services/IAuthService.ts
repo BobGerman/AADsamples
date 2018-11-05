@@ -1,3 +1,3 @@
 export interface IAuthService {
-    getToken(tenant: string, clientId: string, resourceId: string): Promise<string>
+    getToken(tenant: string, clientId: string, resourceId: string, scopes: string[]): Promise<string>
 };

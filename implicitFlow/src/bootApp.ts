@@ -22,7 +22,8 @@ export class bootstrapper {
       const service = ServiceFactory.getService(option);
       service.getAllGroups(constants.tenant,
         clientId,
-        constants.resourceId)
+        constants.resourceId,
+        constants.scopes)
         .then((data: IADGroup[]) => {
           ComponentManager.render(workspace, workspace, data);
         })
