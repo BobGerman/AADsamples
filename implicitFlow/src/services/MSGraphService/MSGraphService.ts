@@ -1,6 +1,6 @@
-import { IADGroup } from '../model/IADGroup';
+import { IADGroup } from '../../model/IADGroup';
 import { IMSGraphService } from './IMSGraphService';
-import { IAuthService } from './IAuthService';
+import { IAuthService } from '../AuthService/IAuthService';
 
 export default class MSGraphService implements IMSGraphService {
 

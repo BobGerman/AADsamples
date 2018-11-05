@@ -1,7 +1,7 @@
-import { IADGroup } from '../model/IADGroup';
+import { IADGroup } from '../../model/IADGroup';
 import { IMSGraphService } from './IMSGraphService';
 
-export default class MockMSGraphService implements IMSGraphService {
+export default class MSGraphServiceMock implements IMSGraphService {
     
     public getAllGroups (): Promise<IADGroup[] | string> {
 

@@ -1,6 +1,6 @@
 import { IADGroup } from './model/IADGroup';
 import { ServiceFactory, ServiceOption } from './services/ServiceFactory';
-import { IMSGraphService } from './services/IMSGraphService';
+import { IMSGraphService } from './services/MSGraphService/IMSGraphService';
 
 import ComponentManager from './components/ComponentManager';
 import * as constants from './constants';

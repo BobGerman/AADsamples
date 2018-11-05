@@ -1,8 +1,8 @@
-import { IMSGraphService } from './IMSGraphService';
-import MockMSGraphService from './MockMSGraphService';
-import MSGraphService from './MSGraphService';
-import AuthServiceV1 from './AuthServiceV1';
-import AuthServiceV2 from './AuthServiceV2';
+import { IMSGraphService } from './MSGraphService/IMSGraphService';
+import MSGraphServiceMock from './MSGraphService/MSGraphServiceMock';
+import MSGraphService from './MSGraphService/MSGraphService';
+import AuthServiceV1 from './AuthService/AuthServiceV1';
+import AuthServiceV2 from './AuthService/AuthServiceV2';
 
 export enum ServiceOption {
     mock, v1, v2
@@ -21,7 +21,7 @@ export class ServiceFactory {
                 new AuthServiceV2()
             );
         } else {
-            return new MockMSGraphService();
+            return new MSGraphServiceMock();
         }
     }
 }

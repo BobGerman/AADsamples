@@ -1,7 +1,7 @@
 /// <reference path="./msal.d.ts" />
 
 import { IAuthService } from './IAuthService';
-import * as constants from '../constants';
+import * as constants from '../../constants';
 
 export default class AuthService implements IAuthService {
 

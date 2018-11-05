@@ -1,6 +1,6 @@
 import * as AuthenticationContext from 'adal-angular';
 import { IAuthService } from './IAuthService';
-import * as constants from '../constants';
+import * as constants from '../../constants';
 
 export default class AuthService implements IAuthService {
 
