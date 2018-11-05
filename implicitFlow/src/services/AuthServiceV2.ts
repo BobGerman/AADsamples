@@ -9,11 +9,16 @@ export default class AuthService implements IAuthService {
 
         return new Promise<string>((resolve, reject) => {
 
-            const userAgentApp = new Msal.UserAgentApplication(constants.clientIdV2, 
+            const userAgentApp = new Msal.UserAgentApplication(
+                constants.clientIdV2, 
                 null, null,
-                { storeAuthStateInCookie: true, cacheLocation: "localStorage" });
+                {
+                    storeAuthStateInCookie: true,
+                    cacheLocation: "localStorage" 
+                });
 
             this.ensureLogin(userAgentApp);
+
             userAgentApp.acquireTokenSilent(constants.scopes)
             .then ((accessToken) => {
                 resolve(accessToken);
@@ -31,11 +36,11 @@ export default class AuthService implements IAuthService {
 
     private ensureLogin(userAgentApp: Msal.UserAgentApplication): void { //: Promise<any> {
 
-        if (userAgentApp.getUser() && !userAgentApp.isCallback(window.location.hash)) {
-            return
+        if (!userAgentApp.getUser() ||
+             userAgentApp.isCallback(window.location.hash)) {
+            userAgentApp.loginRedirect(constants.scopes);
         }
 
-        userAgentApp.loginRedirect(constants.scopes);
     }
 
 }

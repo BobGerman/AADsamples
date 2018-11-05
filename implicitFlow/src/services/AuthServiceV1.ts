@@ -4,10 +4,6 @@ import * as constants from '../constants';
 
 export default class AuthService implements IAuthService {
 
-    // private authContext: AuthenticationContext;
-    // private config: AuthenticationContext.Options;
-    // private resourceId: string;
-
     public getToken(): Promise<string> {
 
         const config: AuthenticationContext.Options = {

@@ -1,3 +1,5 @@
+// Unofficial - was released with msal 0.1 and then no longer available.
+// Making updates as needed as it's definitely out of date
 declare namespace Msal {
     enum AuthorityType {
         Aad = 0,
