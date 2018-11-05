@@ -2,7 +2,7 @@ import { IADGroup } from '../model/IADGroup';
 import { IMSGraphService } from './IMSGraphService';
 import AuthServiceV2 from './AuthServiceV2';
 
-export default class MSGraphServiceV1 implements IMSGraphService {
+export default class MSGraphServiceV2 implements IMSGraphService {
     
     public getAllGroups (tenant: string,
                             clientId: string, 

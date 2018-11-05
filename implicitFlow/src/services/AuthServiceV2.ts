@@ -1,69 +1,79 @@
-import * as AuthenticationContext from 'adal-angular';
-
+/// <reference path="./msal.d.ts" />
 
 export default class AuthService {
 
-    private authContext: AuthenticationContext;
-    private config: AuthenticationContext.Options;
+    private tenant: string;
+    private clientId: string;
     private resourceId: string;
 
     constructor(tenant: string, clientId: string, resourceId: string) {
 
         this.resourceId = resourceId;
-        this.config = {
-            tenant: tenant,
-            clientId: clientId,
-            redirectUri: window.location.href,
-            cacheLocation: 'localStorage'
-        };
-
-        this.authContext = new AuthenticationContext(this.config);
-
+        this.tenant = ''; //
+        this.clientId = '0feedf81-155c-4864-a407-73fbbcc09116';
     }
 
     public getToken(): Promise<string> {
 
         return new Promise<string>((resolve, reject) => {
 
-            if (this.ensureLogin()) {
+            var myMSALObj = new Msal.UserAgentApplication(this.clientId, null,
+                ((errorDesc, token, error, tokenType) => {
+                    // ?? Check error ??
+                    console.log("Received token of type:" + tokenType);
+                    if (tokenType === "access_token") {
+                        resolve(token);
+                    }
+                }),
+                { storeAuthStateInCookie: true, cacheLocation: "localStorage" });
+//                { storeAuthStateInCookie: true, cacheLocation: "localStorage" });
 
-                let cachedToken = this.authContext.getCachedToken(this.resourceId);
-                if (cachedToken) {
-                    resolve(cachedToken);
-                } else {
-                    this.authContext.acquireToken(
-                        this.resourceId,
-                        (error, acquiredToken) => {
-                            if (error || !acquiredToken) {
-                                reject(error);
-                            } else {
-                                resolve(acquiredToken);
-                            }
-                        }
-                    );
-                }
-            } else {
-                reject(`Login error: ${this.authContext.getLoginError()}`);
-            }
+            this.ensureLogin(myMSALObj);
+            // .then((idToken) => {
+                //Call acquireTokenSilent (iframe) to obtain a token for Microsoft Graph
+                myMSALObj.acquireTokenSilent(['group.read.all']).then(function (accessToken) {
+                    resolve(accessToken); //callMSGraph(applicationConfig.graphEndpoint, accessToken, graphAPICallback);
+                }, function (error) {
+                    console.log(error);
+                    // Call acquireTokenPopup (popup window) in case of acquireTokenSilent failure due to consent or interaction required ONLY
+                    if (error.indexOf("consent_required") !== -1 || error.indexOf("interaction_required") !== -1 || error.indexOf("login_required") !== -1) {
+                        myMSALObj.acquireTokenRedirect(['group.read.all']);
+                        // BROWSER WILL REDIRECT HERE and when we return
+                        // the access token will be in cache
+
+                        //.acquireTokenPopup(['groups.read.all']).then(function (accessToken) {
+                        //     resolve(accessToken); //    callMSGraph(applicationConfig.graphEndpoint, accessToken, graphAPICallback);
+                        // }, function (error) {
+                        //     console.log(error);
+                        // });
+                    } else {
+                        reject('Error acquiring token: ' + error);
+                    }
+                // });
+            })
+            .catch((error) => {
+                reject('Error logging in: ' + error);
+            });
         });
 
     }
 
-    private ensureLogin(): boolean {
+    private ensureLogin(myMSALObj: Msal.UserAgentApplication): void { //: Promise<any> {
 
-        var isCallback = this.authContext.isCallback(window.location.hash);
-
-        if (isCallback && !this.authContext.getLoginError()) {
-            this.authContext.handleWindowCallback(window.location.hash);
-        } else {
-            var user = this.authContext.getCachedUser();
-            if (!user) {
-                this.authContext.login();
-            } else {
-                return true;
+        // return new Promise<string | any> ((resolve, reject) => {
+            if (myMSALObj.getUser() && !myMSALObj.isCallback(window.location.hash)) {
+                return
             }
-        }
-        return false;
+
+            // if (!myMSALObj.getUser()) {
+                myMSALObj.loginRedirect(["group.read.all"]);
+            // }
+            // myMSALObj.loginPopup(["groups.read.all"]).then(function (idToken) {
+            //     resolve(idToken);
+            // }, function (error) {
+            //     reject(error);
+            // });
+        // });
     }
 
 }
