@@ -10,7 +10,7 @@ namespace SPConsoleApp
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine($"Obtaining client credentials access token for accessing ${Config.Resource}:\n");
             string token = AuthHelper.GetToken().GetAwaiter().GetResult();
             Console.WriteLine(token);
         }
