@@ -11,7 +11,8 @@ namespace SPConsoleApp
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            Console.ReadKey();
+            string token = AuthHelper.GetToken().GetAwaiter().GetResult();
+            Console.WriteLine(token);
         }
     }
 }
