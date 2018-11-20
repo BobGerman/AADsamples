@@ -14,7 +14,7 @@ This sample aims to demystify the the process of obtaining an Azure AD access to
 
 ## A tale of two endpoints
 
-Azure AD has two ways of registering and authorizing applications: the old way (via the "v1 endpoint") and the new way (via the "v2 endpoint"). Each one has its own registration and client-side library as well as its own endpoint URL for accessing the service. The choice is yours; [this article](https://docs.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison) can help you decide. This sample will show both, using the [ADAL.js](https://docs.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-libraries) library for v1 access and [MSAL (preview)](https://docs.microsoft.com/en-us/azure/active-directory/develop/reference-v2-libraries) for v2 access.
+Azure AD has two ways of registering and authorizing applications: the old way (via the "v1 endpoint") and the new way (via the "v2 endpoint"). Each one has its own registration and client-side library as well as its own endpoint URL for accessing the service. The choice is yours; [this article](https://doc.microsoft.com/en-us/azure/active-directory/develop/azure-ad-endpoint-comparison) can help you decide. This sample will show both, using the [ADAL.js](https://doc.microsoft.com/en-us/azure/active-directory/develop/active-directory-authentication-libraries) library for v1 access and [MSAL (preview)](https://doc.microsoft.com/en-us/azure/active-directory/develop/reference-v2-libraries) for v2 access.
 
 ## App Registrations
 
@@ -26,16 +26,16 @@ TIP: You might want to open the v1 and v2 app registrations in different browser
 
 To review, Azure AD has two permission models: application and delegated. Application permissions are like service accounts; they have their own direct access and aren't associated with any particular user. With delegated permissions, the application acts on behalf of a user, and is limited by both the application permissions and the end-user's permissions.
 
-![Effective permission](2018-11-EffectivePermissions.png)
+![Effective permission](doc/2018-11-EffectivePermissions.png)
 
 For security reasons, delegated permissions are the only ones allowed when calling directly from a web browser, so we need to add a delegated permission.
 
 #### V1 instructions
 
 Find the application you registered in the [day 10](https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-10-azure-ad-applications-on-v1-endpoint/
-) article, (or [register a new one](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-add-azure-ad-app) of type Web app / API with the redirect URL http://localhost:8080/index.1a.html). Click Settings, then Required Permissions, and click into the Microsoft Graph API. The application permissions are at the top, and the delegated at the bottom, so scroll way down and make sure you're selecting the delegated one - it can get confusing!
+) article, (or [register a new one](https://doc.microsoft.com/en-us/azure/active-directory/develop/quickstart-v1-add-azure-ad-app) of type Web app / API with the redirect URL http://localhost:8080/index.1a.html). Click Settings, then Required Permissions, and click into the Microsoft Graph API. The application permissions are at the top, and the delegated at the bottom, so scroll way down and make sure you're selecting the delegated one - it can get confusing!
 
-![Permissions screen](./docs/2018-11-AADV1-Permissions.png)
+![Permissions screen](doc/2018-11-AADV1-Permissions.png)
 
 You need to check the "Read all groups" delegated permission (1); you can see the scope, group.read.all, if you hover over it. We'll need the scope in our code. 
 
@@ -43,17 +43,17 @@ Now notice that some of these permissions require an administrator to consent (t
 
 #### V2 Instructions
 
-Return to the application you created on [day 9](https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-9-azure-ad-applications-on-v2-endpoint/) (or [create a new one](https://docs.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-register-an-app) with your choice of supported account types. Don't worry about Redirect URL yet.)
+Return to the application you created on [day 9](https://developer.microsoft.com/en-us/graph/blogs/30daysmsgraph-day-9-azure-ad-applications-on-v2-endpoint/) (or [create a new one](https://doc.microsoft.com/en-us/azure/active-directory/develop/quickstart-v2-register-an-app) with your choice of supported account types. Don't worry about Redirect URL yet.)
 
 Click "API Permissions" to open the permissions panel.
 
-![V2 permissions](./docs/2018-11-AADV2-Permissions.png)
+![V2 permissions](doc/2018-11-AADV2-Permissions.png)
 
 Then pick + Add a permission (1), and add the delegated Group.Read.All permission (2). Then, because this scope requires administrative consent, click the button (3) and agree.
 
 ### Step 2 - Enable Implicit Flow
 
-The OAuth 2.0 standard includes several "flows" for getting a access token. If you're in a web browser using Azure AD, you need to use [implicit flow](https://docs.microsoft.com/en-us/azure/active-directory/develop/v1-oauth2-implicit-grant-flow) because it doesn't require the browser to handle any secrets like an app password or key. 
+The OAuth 2.0 standard includes several "flows" for getting a access token. If you're in a web browser using Azure AD, you need to use [implicit flow](https://doc.microsoft.com/en-us/azure/active-directory/develop/v1-oauth2-implicit-grant-flow) because it doesn't require the browser to handle any secrets like an app password or key. 
 
 There's no way to keep a secret in the web browser where the user can always pop into the developer console, so it's better not to try. Instead of using a secret, implicit flow requires the user to log in from the web browser and to consent (once) to letting the application act on his or her behalf. 
 Since the only security is the user's login, you can only use delegated permissions with implicit flow.
@@ -64,7 +64,7 @@ In addition, because implicit flow is less secure than the other OAuth flows, yo
 
 In old-school Azure AD, you need to edit the manifest JSON to enable implicit flow. Click the "Edit Manifest" button, and set "oauthAllowImplicitFlow" to true (it's false by default).
 
-![Enable Implicit Flow v1](./docs/2018-11-AADV1-ImplicitFlow.png)
+![Enable Implicit Flow v1](doc/2018-11-AADV1-ImplicitFlow.png)
 
 Click Save and you're done.
 
@@ -72,7 +72,7 @@ Click Save and you're done.
 
 The shiny new Azure AD takes a giant leap forward with actual checkboxes for implicit flow!
 
-![Enable Implicit Flow v2](./docs/2018-11-AADV2-ImplicitFlow.png)
+![Enable Implicit Flow v2](doc/2018-11-AADV2-ImplicitFlow.png)
 
 Check them, click Save, and you're done.
 
@@ -88,7 +88,7 @@ Redirect URLs need to be registered to prevent a hacker from requesting an acces
 
 In your application, click Settings, then Reply URLs.
 
-![V1 redirect URLs](./docs/2011-11-AADv1-ReplyURLs.png)
+![V1 redirect URLs](doc/2011-11-AADv1-ReplyURLs.png)
 
 Add one for each of the V1 demos, and one for Postman: https://www.getpostman.com/oauth2/callback, http://localhost:8080/index.1a.html and http://localhost:8080/index.1b.html.
 
@@ -96,7 +96,7 @@ Add one for each of the V1 demos, and one for Postman: https://www.getpostman.co
 
 In your application's overview page, you'll see a link to the Redirect URLs in the right column of information.
 
-![V2 redirect URLs](./docs/2011-11-AADv2-ReplyURLs.png)
+![V2 redirect URLs](doc/2011-11-AADv2-ReplyURLs.png)
 
 Add one for each of the V2 demos, and one for Postman: https://www.getpostman.com/oauth2/callback,  
 http://localhost:8080/index.2a.html and http://localhost:8080/index.2b.html.
@@ -111,7 +111,7 @@ Now let's use [Postman](https://www.getpostman.com/), which was introduced in [d
 
 In your app registration, back out to the overall v1 registration page (where all the apps are listed) and click Endpoints. Grab a copy of the Authorization endpoint; this has your tenant ID already set up in the right place.
 
-![Endpoints](./docs/2018-11-AADv1-Endpoints.png)
+![Endpoints](doc/2018-11-AADv1-Endpoints.png)
 
 Open Postman and add a new request. Enter the Graph API query
 
@@ -123,15 +123,15 @@ NOTE: On day 13, the instructions had you request the token manually; this is ne
 
 Click on the Authorization tab and set the type to OAuth 2.0. Click Get New Access Token and fill in the dialog box. Name your token whatever you like, and set the Grant Type to Implicit. For callback URL, enter https://www.getpostman.com/oauth2/callback (same as you added to the reply URL's in the app registration). Paste in the Auth URL you copied above, and add ?resource=https://graph.microsoft.com to the end to specify the resource you want a token for. Paste in your Client ID (application ID) from the app registration and you're done; you can leave Scope and State blank. 
 
-![Requesting a v1 access token](./docs/2018-11-AADv1-PostmanRequestToken.png)
+![Requesting a v1 access token](doc/2018-11-AADv1-PostmanRequestToken.png)
 
 Then press Request Token. You should get back a token! If not, you might want to hit ctrl+alt+C to open the Postman console to inspect the error. Scroll down to the bottom of the token and click Use Token
 
-![Selecting a v1 access token](./docs/2018-11-AADv1-PostmanSelectToken.png)
+![Selecting a v1 access token](doc/2018-11-AADv1-PostmanSelectToken.png)
 
 At this point you should be able to send the request and see the groups as JSON in the bottom window.
 
-![V1 results](./docs/2018-11-AADv1-PostmanGraphRequest.png)
+![V1 results](doc/2018-11-AADv1-PostmanGraphRequest.png)
 
 #### V2 Instructions
 
@@ -157,7 +157,7 @@ There are [four samples](https://github.com/BobGerman/AADsamples/tree/master/imp
 <tr><td>index.2b.html</td><td>v2 endpoint using MSAL with TypeScript, Webpack, and React</td>
 </table>
 
-The JavaScript examples are really simple, with good old jQuery and all the code on one page. They're actually drawn from elsewhere; the Azure AD V1  sample is from [Julie Turner's](https://twitter.com/jfj1997) awesome article series, [Extending SharePoint with ADAL and the Microsoft Graph API](https://julieturner.net/2017/01/extending-sharepoint-with-adal-and-the-microsoft-graph-api-part-1-the-setup/); the V2 example is from [this Microsoft tutorial.](https://docs.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-spa).
+The JavaScript examples are really simple, with good old jQuery and all the code on one page. They're actually drawn from elsewhere; the Azure AD V1  sample is from [Julie Turner's](https://twitter.com/jfj1997) awesome article series, [Extending SharePoint with ADAL and the Microsoft Graph API](https://julieturner.net/2017/01/extending-sharepoint-with-adal-and-the-microsoft-graph-api-part-1-the-setup/); the V2 example is from [this Microsoft tutorial.](https://doc.microsoft.com/en-us/azure/active-directory/develop/tutorial-v2-javascript-spa).
 
 The TypeScript examples are new, and are intended for developers building full scale single page applications. They're also instructive because TypeScript made it easy to separate the authentication code from the Graph calls and user interface, so it's a lot easier to see what's going on.
 
@@ -194,7 +194,7 @@ and you can navigate to the various demos.
 
 The V1 JavaScript demo logs the user on and displays a bit of profile information; the V2 JavaScript demo is similar but has an explicit Login/Logout button. The TypeScript demos display a list of all groups in your tenant.
 
-![Running demo 2b](./docs/2018-11-AADV2-Run.png)
+![Running demo 2b](doc/2018-11-AADV2-Run.png)
 
 ## Learning from the Code
 
