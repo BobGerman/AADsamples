@@ -1,5 +1,5 @@
-import { IADGroup } from '../../model/IADGroup';
+import { IADProfile } from '../../model/IADProfile';
 
 export interface IMSGraphService {
-    getAllGroups(): Promise<IADGroup[] | string>;
+    getProfile(): Promise<IADProfile | string>;
 }

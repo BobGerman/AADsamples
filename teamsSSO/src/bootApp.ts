@@ -1,4 +1,4 @@
-import { IADGroup } from './model/IADGroup';
+import { IADProfile } from './model/IADProfile';
 import { ServiceFactory, ServiceOption } from './services/ServiceFactory';
 import { IMSGraphService } from './services/MSGraphService/IMSGraphService';
 
@@ -13,11 +13,11 @@ export class bootstrapper {
 
       let service: IMSGraphService = null;
       service = ServiceFactory.getService(ServiceOption.v2);
-//        service = ServiceFactory.getService(ServiceOption.mock);
+//      service = ServiceFactory.getService(ServiceOption.mock);
 
-      service.getAllGroups()
-        .then((data: IADGroup[]) => {
-          ComponentManager.renderGroupTable(workspace, data);
+      service.getProfile()
+        .then((data: IADProfile) => {
+          ComponentManager.renderGraphResults(workspace, data);
         })
         .catch((error: string) => {
           console.log(`Error: ${error}`);

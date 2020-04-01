@@ -1,4 +1,4 @@
-import { IADGroup } from '../../model/IADGroup';
+import { IADProfile } from '../../model/IADProfile';
 import { IMSGraphService } from './IMSGraphService';
 import { IAuthService } from '../AuthService/IAuthService';
 
@@ -6,16 +6,16 @@ export default class MSGraphService implements IMSGraphService {
 
     constructor(private authService: IAuthService) { }
 
-    public getAllGroups():
-        Promise<IADGroup[] | string> {
+    public getProfile():
+        Promise<IADProfile | string> {
 
-        return new Promise<IADGroup[]>((resolve, reject) => {
+        return new Promise<IADProfile>((resolve, reject) => {
 
             this.authService.getToken()
                 .then((token) => {
 
                     fetch(
-                        `https://graph.microsoft.com/v1.0/groups/?$orderby=displayName`,
+                        `https://graph.microsoft.com/v1.0/me/`,
                         {
                             method: "GET",
                             mode: "cors",
@@ -32,36 +32,27 @@ export default class MSGraphService implements IMSGraphService {
                             }
                         })
                         .then((json) => {
-                            const result: IADGroup[] =
-                                json.value.map((g) => ({
-                                    id: g.id,
-                                    name: g.displayName,
-                                    email: g.mail,
-                                    types: g.groupTypes.join()
-                                }));
-                            resolve(result);
+                            resolve(<IADProfile>json);
                         })
                         .catch((error) => {
-                            resolve([
+                            resolve(
                                 {
-                                    id: 1,
-                                    name: `Error ${error} using token ${token}`,
-                                    email: '',
-                                    types: ''
+                                    id: 'ERROR',
+                                    displayName: `Error ${error} using token ${token}`,
+                                    userPrincipalName: ''
                                 }
-                            ]);
+                            );
                         });
 
                 })
                 .catch((error) => {
-                    resolve([
+                    resolve(
                         {
-                            id: 1,
-                            name: 'ERROR: ' + error,
-                            email: '',
-                            types: ''
+                            id: 'ERROR',
+                            displayName: `Error ${error}`,
+                            userPrincipalName: ''
                         }
-                    ]);
+                    );
                 })
 
         });

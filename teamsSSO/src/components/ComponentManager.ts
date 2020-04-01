@@ -1,20 +1,19 @@
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 
-import { IGroupTableProps } from './GroupTableProps';
-import GroupTable from './GroupTable';
+import { IProfileProps, Profile } from './Profile';
 
-import { IADGroup } from '../model/IADGroup';
+import { IADProfile } from '../model/IADProfile';
 
 export default class ComponentManager {
 
-    public static renderGroupTable(workspaceDomElement: HTMLElement,
-        data: IADGroup[]): void {
+    public static renderGraphResults(workspaceDomElement: HTMLElement,
+        data: IADProfile): void {
 
         if (workspaceDomElement) {
-            const reactElt: React.ReactElement<IGroupTableProps> =
-                React.createElement(GroupTable, {
-                    groups: data
+            const reactElt: React.ReactElement<IProfileProps> =
+                React.createElement(Profile, {
+                    profile: data
                 });
             ReactDOM.render(reactElt, workspaceDomElement);
         }
