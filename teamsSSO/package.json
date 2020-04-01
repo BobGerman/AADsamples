@@ -1,0 +1,29 @@
+{
+  "name": "remanagerspa",
+  "version": "1.0.0",
+  "description": "Demo to show how to call a secured web API from a SPA",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/BobGerman/AzureSPC-WebAPI"
+  },
+  "scripts": {
+    "build": "webpack"
+  },
+  "devDependencies": {
+    "webpack": "~2.7.0",
+    "html-loader": "~0.4.5",
+    "css-loader": "~0.26.4",
+    "typescript": "2.4.2",
+    "ts-loader": "~2.3.7",
+    "@types/react": "15.6.6",
+    "@types/react-dom": "15.5.6",
+    "@types/webpack-env": ">=1.12.1 <1.14.0",
+    "@types/es6-promise": "3.3.0",
+    "@types/adal-angular": "^1.0.1",
+    "style-loader": "~0.13.2",
+    "node-sass": "~4.7.2",
+    "sass-loader": "~4.1.1"
+  },
+  "dependencies": {}
+}
