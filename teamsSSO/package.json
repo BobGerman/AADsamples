@@ -25,5 +25,7 @@
     "node-sass": "~4.7.2",
     "sass-loader": "~4.1.1"
   },
-  "dependencies": {}
+  "dependencies": {
+    "@microsoft/teams-js": "^1.6.0-beta.13"
+  }
 }

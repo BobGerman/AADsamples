@@ -12,7 +12,7 @@ export class bootstrapper {
     if (workspace) {
 
       let service: IMSGraphService = null;
-      service = ServiceFactory.getService(ServiceOption.v2);
+      service = ServiceFactory.getService(ServiceOption.v1);
 //      service = ServiceFactory.getService(ServiceOption.mock);
 
       service.getProfile()
